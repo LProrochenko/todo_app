@@ -6,6 +6,7 @@ import TodoList from './components/Todos/TodoList';
 
 function App() {
   const [todos, setTodos] = useState([]);
+
   function addTodoHandler(text) {
     const newTodo = {
       text,
@@ -14,13 +15,24 @@ function App() {
     };
     setTodos([...todos, newTodo]);
   }
-  console.log(todos);
+
+  function todoDeleteHandler(id) {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  }
+
+  function todoToggleHandler(id) {
+    setTodos(todos.map((todo) => todo.id === id ? {...todo, isCompleted: !todo.isCompleted} : {...todo}));
+  }
 
   return (
     <div className="App">
       <h1>Todo App</h1>
       <TodoForm addTodo={addTodoHandler} />
-      <TodoList todos={todos} />
+      <TodoList
+        todos={todos}
+        todoDelete={todoDeleteHandler}
+        todoToggle={todoToggleHandler}
+      />
     </div>
   );
 }
