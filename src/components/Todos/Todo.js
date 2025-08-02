@@ -1,7 +1,7 @@
-function Todo() {
+function Todo({todo, index}) {
   return (
     <div>
-      <p>todo one</p>
+      <p>{todo.text}</p>
     </div>
   );
 }
