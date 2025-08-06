@@ -1,7 +1,9 @@
+import styles from './Button.module.css';
+
 function Button(props) {
   const { children, disabled = false } = props;
   return (
-    <button {...props} disabled={disabled}>
+    <button {...props} className={styles.button} disabled={disabled}>
       {children}
     </button>
   );
