@@ -22,14 +22,31 @@ function App() {
   }
 
   function todoToggleHandler(id) {
-    setTodos(todos.map((todo) => todo.id === id ? {...todo, isCompleted: !todo.isCompleted} : {...todo}));
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id
+          ? { ...todo, isCompleted: !todo.isCompleted }
+          : { ...todo }
+      )
+    );
+  }
+
+  function resetTodoHandler() {
+    setTodos([]);
+  }
+
+  function clearCompletedTodosHandler() {
+    setTodos(todos.filter((todo) => !todo.isCompleted));
   }
 
   return (
     <div className="App">
       <h1>Todo App</h1>
       <TodoForm addTodo={addTodoHandler} />
-      <TodosAction />
+      <TodosAction
+        resetTodo={resetTodoHandler}
+        clearCompletedTodos={clearCompletedTodosHandler}
+      />
       <TodoList
         todos={todos}
         todoDelete={todoDeleteHandler}
