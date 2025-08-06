@@ -44,3 +44,15 @@
 .deleteIcon:hover {
   color: red;
 }
+
+.completedTodo {
+  background-color: unset;
+  border-color: gray;
+  color: gray;
+}
+
+.todo.completedTodo .todoIcon,
+.todo.completedTodo .checkIcon,
+.todo.completedTodo .deleteIcon {
+  color: gray;
+}
