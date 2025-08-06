@@ -55,6 +55,12 @@ function App() {
         todoDelete={todoDeleteHandler}
         todoToggle={todoToggleHandler}
       />
+      {completedTodosCount > 0 && (
+        <h2>
+          You have comleted {completedTodosCount}{' '}
+          {completedTodosCount > 1 ? 'todos' : 'todo'}
+        </h2>
+      )}
     </div>
   );
 }
