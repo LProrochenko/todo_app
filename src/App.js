@@ -1,70 +1,74 @@
+import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
-import './App.css';
+
 import TodoForm from './components/Todos/TodoForm';
 import TodoList from './components/Todos/TodoList';
 import TodosAction from './components/Todos/TodosAction';
 
-function App() {
+import './App.css';
+
+const App = () => {
+  // state
   const [todos, setTodos] = useState([]);
 
-  function addTodoHandler(text) {
+  // other
+  const completedTodosCount = todos.filter((todo) => todo.isCompleted).length;
+
+  // functions
+  const addTodo = useCallback((text) => {
     const newTodo = {
       text,
       isCompleted: false,
       id: uuidv4(),
     };
-    setTodos([...todos, newTodo]);
-  }
 
-  function todoDeleteHandler(id) {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  }
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  }, []);
 
-  function todoToggleHandler(id) {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, isCompleted: !todo.isCompleted }
-          : { ...todo }
+  const deleteTodo = useCallback((id) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  }, []);
+
+  const toggleCompletedTodo = useCallback((id) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
       )
     );
-  }
+  }, []);
 
-  function resetTodoHandler() {
+  const resetTodos = useCallback(() => {
     setTodos([]);
-  }
+  }, []);
 
-  function clearCompletedTodosHandler() {
-    setTodos(todos.filter((todo) => !todo.isCompleted));
-  }
+  const deleteCompletedTodos = useCallback(() => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => !todo.isCompleted));
+  }, []);
 
-  const completedTodosCount = todos.filter((todo) => todo.isCompleted).length;
+  const getCompletedTodosText = () =>
+    `${completedTodosCount} ${completedTodosCount > 1 ? 'todos' : 'todo'}`;
 
   return (
-    <div className="App">
-      <h1>Todo App</h1>
-      <TodoForm addTodo={addTodoHandler} />
+    <div className="app">
+      <h1>My TodoList</h1>
+      <TodoForm addTodo={addTodo} />
       {todos.length > 0 && (
         <TodosAction
-          resetTodo={resetTodoHandler}
-          clearCompletedTodos={clearCompletedTodosHandler}
+          resetTodos={resetTodos}
+          deleteCompletedTodos={deleteCompletedTodos}
           completedTodosExist={!!completedTodosCount}
         />
       )}
       <TodoList
         todos={todos}
-        todoDelete={todoDeleteHandler}
-        todoToggle={todoToggleHandler}
+        deleteTodo={deleteTodo}
+        toggleCompletedTodo={toggleCompletedTodo}
       />
       {completedTodosCount > 0 && (
-        <h2>
-          You have comleted {completedTodosCount}{' '}
-          {completedTodosCount > 1 ? 'todos' : 'todo'}
-        </h2>
+        <h2>You have comleted {getCompletedTodosText()}</h2>
       )}
     </div>
   );
-}
+};
 
 export default App;

@@ -1,21 +1,36 @@
 import { useState } from 'react';
+
 import Button from '../UI/Button';
+
 import styles from './TodoForm.module.css';
 
-function TodoForm({ addTodo }) {
+const TodoForm = (props) => {
+  // props
+  const { addTodo } = props;
+
+  // state
   const [text, setText] = useState('');
-  const onSubmitHandler = (e) => {
+
+  // handlers
+  const submitHandler = (e) => {
     e.preventDefault();
-    if (!text.trim()) return;
-    addTodo(text);
+
+    const trimmedText = text.trim();
+
+    if (!trimmedText) {
+      return;
+    }
+
+    addTodo(trimmedText);
     setText('');
   };
+
   return (
     <div className={styles.todoFormContainer}>
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={submitHandler}>
         <input
           type="text"
-          placeholder="Enter new todo"
+          placeholder="Type new todo"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />

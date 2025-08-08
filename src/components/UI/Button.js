@@ -1,12 +1,14 @@
 import styles from './Button.module.css';
 
-function Button(props) {
-  const { children, disabled = false } = props;
+const Button = (props) => {
+  // props
+  const { children, disabled = false, ...rest } = props;
+
   return (
-    <button {...props} className={styles.button} disabled={disabled}>
+    <button {...rest} className={styles.button} disabled={disabled}>
       {children}
     </button>
   );
-}
+};
 
 export default Button;
